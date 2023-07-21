@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      padding: 10px;
+    }
+  </style>
+  <script type="text/javascript" src="data.json"></script>
+  <script>
+    function splitToNChunks(array, n) {
+      let result = [];
+      for (let i = n; i > 0; i--) {
+        result.push(array.splice(0, Math.ceil(array.length / i)));
+      }
+      return result;
+    }
+    const Seasons = {
+      Summer: 0,
+      Autumn: 1,
+      Winter: 2,
+      Spring: 3
+    }
+    const today = new Date();
+    let todaysIndex = today.getDay() - 1;
+
+
+    function myFunction() {
+
+      fetch("data.json")
+        .then(response => response.json())
+        .then(links => {
+          let todaysLinks = splitToNChunks([...links], 6)[todaysIndex]
+          let htmlData = "";
+          let brTag = "<br />";
+          for (let i = 0; i < todaysLinks.length; i++) {
+
+            setTimeout(function () {
+              window.open(todaysLinks[i], "_blank");
+            }, 500);
+
+           
+
+            // let linkValue = i + 1;
+            // htmlData = htmlData + brTag + "<a target='_blank' href=" + todaysLinks[i] + ">Link " + linkValue + "</a>"
+          }
+          document.getElementById('tag-id').innerHTML = htmlData;
+        });
+
+
+    }
+  </script>
+</head>
+
+<body>
+  <h1>Links for today</h1>
+  <button onclick="myFunction()">Open All Links for today</button>
+  <div id="tag-id">
+
+  </div>
+</body>
+
+</html>
